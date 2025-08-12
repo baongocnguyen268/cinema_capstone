@@ -136,6 +136,16 @@ export default function Navbar() {
             Register
           </NavLink>
         </li>
+        <li>
+          <NavLink
+            to="/buy-tickets"
+            className={({ isActive }) =>
+              isActive ? "text-pink-500" : "text-white hover:text-pink-400"
+            }
+          >
+            Buy Tickets
+          </NavLink>
+        </li>
       </ul>
 
       <div className="flex items-center space-x-2">

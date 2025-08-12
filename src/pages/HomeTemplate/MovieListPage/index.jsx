@@ -2,9 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getMovieListApi } from "../../../services/movie.api";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { setCurrentPage, setMovie } from "../../../store/movie.slice";
+import { useSelector, useDispatch } from "react-redux";
+import { paginate } from "../../../utils/pagination";
 
 export default function MovieListPage() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const dispatch = useDispatch();
+  const currentPage = useSelector((state) => state.movie.currentPage);
   const itemsPerPage = 12;
   const {
     data: movie,
@@ -17,7 +21,11 @@ export default function MovieListPage() {
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Something went wrong!</p>;
-  const handlePageChange = (page) => setCurrentPage(page);
+  const handlePageChange = (page) => dispatch(setCurrentPage(page));
+
+  const displayedMovies = Array.isArray(movie)
+    ? paginate(movie, currentPage, itemsPerPage)
+    : [];
   return (
     <div className="p-4 bg-black min-h-screen text-white">
       <div className="flex items-center justify-center mb-8">
@@ -34,7 +42,7 @@ export default function MovieListPage() {
         key={movie.maPhim}
         className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
-        {movie?.map((movie) => (
+        {displayedMovies.map((movie) => (
           <div
             key={movie.maPhim}
             className="bg-gray-800 rounded-md overflow-hidden"
@@ -47,7 +55,11 @@ export default function MovieListPage() {
             <div className="p-2">
               <h2 className="text-lg font-semibold">{movie.tenPhim}</h2>
               <p className="text-sm text-gray-400">
-                {movie.moTa || "No description"}
+                {movie.moTa
+                  ? movie.moTa.length > 100
+                    ? movie.moTa.slice(0, 100) + "..."
+                    : movie.moTa
+                  : "No description"}
               </p>
               <Link
                 to={`/movie-details/${movie.maPhim}`}
