@@ -29,3 +29,24 @@ export const getMovieDetailsApi = async (movieId) => {
     console.log("🚀 ~ getMovieDetailsApi ~ error:", error);
   }
 };
+export const getComingSoonApi = async (maNhom) => {
+  try {
+    const response = await api.get(
+      `QuanLyPhim/LayDanhSachPhim?maNhom=${maNhom}`
+    );
+    return response.data.content.filter((movie) => movie.sapChieu);
+  } catch (error) {
+    console.log("🚀 ~ getComingSoonApi ~ error:", error);
+  }
+};
+
+export const getOnAirApi = async (maNhom) => {
+  try {
+    const response = await api.get(
+      `QuanLyPhim/LayDanhSachPhim?maNhom=${maNhom}`
+    );
+    return response.data.content.filter((movie) => movie.dangChieu);
+  } catch (error) {
+    console.log("🚀 ~ getOnAirApi ~ error:", error);
+  }
+};

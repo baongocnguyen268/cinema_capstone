@@ -6,8 +6,12 @@ import MovieListPage from "../pages/HomeTemplate/MovieListPage";
 import MovieDetails from "../pages/HomeTemplate/MovieDetailsPage";
 import NewsPage from "../pages/HomeTemplate/NewsPage";
 import RegisterPage from "../pages/HomeTemplate/RegisterPage";
+import BuyTicketPage from "../pages/HomeTemplate/BuyTicketPage";
 import OnAir from "../pages/HomeTemplate/OnAirPage";
 import ComingSoon from "../pages/HomeTemplate/ComingSoonPage";
+import LoginPage from "../pages/HomeTemplate/LoginPage";
+import AdminTemplate from "../pages/AdminTemplate";
+import Dashboard from "../pages/AdminTemplate/DashBoard";
 const routes = [
   {
     path: "",
@@ -38,12 +42,30 @@ const routes = [
         element: RegisterPage,
       },
       {
+        path: "buy-tickets",
+        element: BuyTicketPage,
+      },
+      {
         path: "coming-soon",
         element: ComingSoon,
       },
       {
         path: "on-air",
         element: OnAir,
+      },
+      {
+        path: "login",
+        element: LoginPage,
+      },
+    ],
+  },
+  {
+    path: "admin",
+    element: AdminTemplate,
+    nested: [
+      {
+        path: "dashboard",
+        element: Dashboard,
       },
     ],
   },
