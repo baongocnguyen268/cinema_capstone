@@ -15,6 +15,7 @@ import Dashboard from "../pages/AdminTemplate/DashBoard";
 import MovieManagement from "../pages/AdminTemplate/Movie-management";
 import AuthPage from "../pages/AdminTemplate/AuthPage";
 import AdminGate from "../pages/AdminTemplate/guards/adminGate";
+import AddMovie from "../pages/AdminTemplate/AddMovie";
 const routes = [
   {
     path: "",
@@ -66,7 +67,7 @@ const routes = [
     path: "admin",
     element: AdminGate,
     nested: [
-      { index: true, element: Dashboard },
+      { path: "", element: Dashboard },
       {
         path: "dashboard",
         element: Dashboard,
@@ -74,6 +75,10 @@ const routes = [
       {
         path: "movies-management",
         element: MovieManagement,
+      },
+      {
+        path: "movies-management/add-movie",
+        element: AddMovie,
       },
     ],
   },

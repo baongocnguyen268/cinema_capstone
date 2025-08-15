@@ -61,3 +61,15 @@ export const getMovieShowtimesApi = async (maPhim) => {
     console.log("🚀 ~ getMovieShowtimesApi ~ error:", error);
   }
 };
+
+export const updateMovieApi = async (movieId, movieData) => {
+  try {
+    const response = await api.put(
+      `/QuanLyPhim/CapNhatPhim?MaPhim=${movieId}`,
+      movieData
+    );
+    return response.data.content;
+  } catch (error) {
+    console.log("🚀 ~ updateMovieApi ~ error:", error);
+  }
+};
