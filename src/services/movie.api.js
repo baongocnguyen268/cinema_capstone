@@ -50,3 +50,14 @@ export const getOnAirApi = async (maNhom) => {
     console.log("🚀 ~ getOnAirApi ~ error:", error);
   }
 };
+
+export const getMovieShowtimesApi = async (maPhim) => {
+  try {
+    const response = await api.get(
+      `/QuanLyRap/LayThongTinLichChieuPhim?MaPhim=${maPhim}`
+    );
+    return response.data.content;
+  } catch (error) {
+    console.log("🚀 ~ getMovieShowtimesApi ~ error:", error);
+  }
+};
