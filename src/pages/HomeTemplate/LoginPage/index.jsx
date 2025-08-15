@@ -1,31 +1,35 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { LoginApi } from "../../../services/auth.api";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../../store/auth.slice";
-import { se } from "date-fns/locale";
-import { set } from "date-fns";
+
 export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { mutation: handleLogin, isPending } = useMutation({
+  const location = useLocation();
+  const [values, setValues] = useState({
+    taiKhoan: "",
+    matKhau: "",
+  });
+  const { mutate: handleLogin, isPending } = useMutation({
     mutationFn: (valuesHandleLogin) => LoginApi(valuesHandleLogin),
     onSuccess: (user) => {
       if (!user) return;
+      localStorage.setItem("token", user.accessToken);
       localStorage.setItem("user", JSON.stringify(user));
       dispatch(setUser(user));
-      navigate(user.maLoaiNguoiDung === "QuanTri" ? "/admin/dashboard" : "/");
+      const isAdmin = user.maLoaiNguoiDung === "QuanTri";
+      const redirectPath = isAdmin ? "/admin" : location.state?.from || "/";
+      navigate(redirectPath, { replace: true });
     },
     onError: () => {
       alert("Login failed. Please check your credentials.");
     },
   });
-  const [values, setValues] = useState({
-    taiKhoan: "",
-    matKhau: "",
-  });
+
   const handleOnChange = (event) => {
     setValues({
       ...values,
@@ -36,12 +40,22 @@ export default function LoginPage() {
     event.preventDefault();
     handleLogin(values);
   };
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (user && user.maLoaiNguoiDung === "QuanTri") {
-    return <Navigate to="/admin/Dashboard" />;
-  }
-  if (user && user.maLoaiNguoiDung !== "QuanTri") {
-    return <Navigate to="/" />;
+
+  const LoggedUser = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
+  })();
+
+  if (LoggedUser) {
+    const from = location.state?.from;
+    if (from) return <Navigate to={from} replace />;
+    if (LoggedUser.maLoaiNguoiDung === "QuanTri") {
+      return <Navigate to="/admin/dashboard" replace />;
+    }
+    return <Navigate to="/" replace />;
   }
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4">
@@ -56,11 +70,12 @@ export default function LoginPage() {
         </p>
 
         {/* Form */}
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Username */}
           <div>
             <label className="block text-sm text-gray-300 mb-1">Username</label>
             <input
+              name="taiKhoan"
               onChange={handleOnChange}
               type="text"
               className="w-full rounded-lg bg-gray-800 border border-gray-700 px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
@@ -73,6 +88,7 @@ export default function LoginPage() {
           <div>
             <label className="block text-sm text-gray-300 mb-1">Password</label>
             <input
+              name="matKhau"
               onChange={handleOnChange}
               value={values.matKhau}
               type="password"

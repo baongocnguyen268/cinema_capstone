@@ -12,6 +12,9 @@ import ComingSoon from "../pages/HomeTemplate/ComingSoonPage";
 import LoginPage from "../pages/HomeTemplate/LoginPage";
 import AdminTemplate from "../pages/AdminTemplate";
 import Dashboard from "../pages/AdminTemplate/DashBoard";
+import MovieManagement from "../pages/AdminTemplate/Movie-management";
+import AuthPage from "../pages/AdminTemplate/AuthPage";
+import AdminGate from "../pages/AdminTemplate/guards/adminGate";
 const routes = [
   {
     path: "",
@@ -42,7 +45,7 @@ const routes = [
         element: RegisterPage,
       },
       {
-        path: "buy-tickets",
+        path: "buy-tickets/:maLichChieu",
         element: BuyTicketPage,
       },
       {
@@ -61,13 +64,22 @@ const routes = [
   },
   {
     path: "admin",
-    element: AdminTemplate,
+    element: AdminGate,
     nested: [
+      { index: true, element: Dashboard },
       {
         path: "dashboard",
         element: Dashboard,
       },
+      {
+        path: "movies-management",
+        element: MovieManagement,
+      },
     ],
+  },
+  {
+    path: "auth",
+    element: AuthPage,
   },
 ];
 

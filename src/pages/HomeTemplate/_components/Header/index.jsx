@@ -1,11 +1,20 @@
 import { NavLink, useLocation } from "react-router-dom";
 import React from "react";
+import { clearUser } from "../../../../store/auth.slice";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function Navbar() {
   const location = useLocation();
   const isMoviesActive = ["/movie-list", "/coming-soon", "/on-air"].includes(
     location.pathname
   );
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    dispatch(clearUser());
+    Navigate("/");
+  };
 
   return (
     <nav className="bg-black px-6 py-4 flex justify-between items-center border-b border-[#333] z-50 relative">
@@ -136,16 +145,6 @@ export default function Navbar() {
             Register
           </NavLink>
         </li>
-        <li>
-          <NavLink
-            to="/buy-tickets"
-            className={({ isActive }) =>
-              isActive ? "text-pink-500" : "text-white hover:text-pink-400"
-            }
-          >
-            Buy Tickets
-          </NavLink>
-        </li>
       </ul>
 
       <div className="flex items-center space-x-2">
@@ -157,11 +156,20 @@ export default function Navbar() {
         <button className="bg-pink-500 hover:bg-pink-600 text-sm px-3 py-1 rounded text-white">
           Search
         </button>
-        <NavLink to="/login">
-          <button className="ml-2 bg-white hover:bg-gray-200 text-sm px-3 py-1 rounded text-black font-semibold">
-            Login
+        {!user ? (
+          <NavLink to="/login">
+            <button className="ml-2 bg-white hover:bg-gray-200 text-sm px-3 py-1 rounded text-black font-semibold">
+              Login
+            </button>
+          </NavLink>
+        ) : (
+          <button
+            onClick={handleLogout}
+            className="ml-2 bg-gray-700 hover:bg-gray-600 text-sm px-3 py-1 rounded text-white font-semibold"
+          >
+            Logout
           </button>
-        </NavLink>
+        )}
       </div>
     </nav>
   );
