@@ -1,8 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   currentPage: 1,
   movie: [],
+  updating: false,
+  deleting: false,
+  error: null,
 };
 
 const movieSlice = createSlice({

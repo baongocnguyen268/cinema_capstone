@@ -51,7 +51,7 @@ export default function Sidebar() {
   return (
     <aside className="h-[calc(100vh-56px)] overflow-y-auto pr-2">
       <nav className="space-y-2">
-        <NavLink to="/admin/movies" className={itemColums}>
+        <NavLink to="/admin/movies-management" className={itemColums}>
           <IconFilm className="opacity-80" />
           <span>Quản lý phim</span>
         </NavLink>
