@@ -62,14 +62,23 @@ export const getMovieShowtimesApi = async (maPhim) => {
   }
 };
 
-export const updateMovieApi = async (movieId, movieData) => {
+export const deleteMovieApi = async (maPhim) => {
   try {
-    const response = await api.put(
-      `/QuanLyPhim/CapNhatPhim?MaPhim=${movieId}`,
-      movieData
-    );
+    const response = await api.delete(`/QuanLyPhim/XoaPhim?MaPhim=${maPhim}`, {
+      params: { maPhim },
+    });
+    return response.data.content;
+  } catch (error) {
+    console.log("🚀 ~ deleteMovieApi ~ error:", error);
+  }
+};
+
+export const updateMovieApi = async (formData) => {
+  try {
+    const response = await api.post("QuanLyPhim/CapNhatPhimUpload", formData);
     return response.data.content;
   } catch (error) {
     console.log("🚀 ~ updateMovieApi ~ error:", error);
+    throw error;
   }
 };

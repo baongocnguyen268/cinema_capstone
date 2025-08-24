@@ -55,7 +55,7 @@ export default function Sidebar() {
           <IconFilm className="opacity-80" />
           <span>Quản lý phim</span>
         </NavLink>
-        <NavLink to="/admin/users" className={itemColums}>
+        <NavLink to="/admin/users-management" className={itemColums}>
           <IconUsers className="opacity-80" />
           <span>Quản lý người dùng</span>
         </NavLink>

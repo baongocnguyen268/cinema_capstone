@@ -16,6 +16,8 @@ import MovieManagement from "../pages/AdminTemplate/Movie-management";
 import AuthPage from "../pages/AdminTemplate/AuthPage";
 import AdminGate from "../pages/AdminTemplate/guards/adminGate";
 import AddMovie from "../pages/AdminTemplate/AddMovie";
+import UserManagement from "../pages/AdminTemplate/User-Management";
+import { Navigate } from "react-router-dom";
 const routes = [
   {
     path: "",
@@ -80,6 +82,7 @@ const routes = [
         path: "movies-management/add-movie",
         element: AddMovie,
       },
+      { path: "users-management", element: UserManagement },
     ],
   },
   {
